@@ -23,6 +23,7 @@ import FileElement from './FileElement.vue';
 const store = useTreeStore()
 const { tree } = storeToRefs(store)
 const {addNewFile,addNewFolder}=store
+
 const dirs = computed(() => {
     const result: Array<Item> = []
     tree.value.forEach(value => {
@@ -42,16 +43,11 @@ const files = computed(() => {
 <style lang="scss" >
 
 .mainRoot {
-    
-   
     padding: 10px;
     border-radius: 20px;
-    
-    
     button{
         background-color: transparent;
         border: none;
     }
-  
 }
 </style>
