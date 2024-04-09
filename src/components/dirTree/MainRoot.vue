@@ -1,6 +1,7 @@
 <template>
     <div class="mainRoot">
-
+        <button @click=" addNewFile('root')"><img src="@/assets/icons/addFile.svg"/></button>
+        <button @click="addNewFolder('root')"><img src="@/assets/icons/addFolder.svg"/></button> 
         <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
         <FileElement v-for="file in files" :file="file" :key="file.id" />
     </div>
@@ -14,7 +15,7 @@ import { storeToRefs } from 'pinia';
 import FileElement from './FileElement.vue';
 const store = useTreeStore()
 const { tree } = storeToRefs(store)
-
+const {addNewFile,addNewFolder}=store
 const dirs = computed(() => {
     const result: Array<Item> = []
     tree.value.forEach(value => {
@@ -37,7 +38,7 @@ const files = computed(() => {
 <style lang="scss">
 .mainRoot {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 30%;
+    left: 30%;
 }
 </style>

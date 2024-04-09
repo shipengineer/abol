@@ -5,27 +5,27 @@
             {{ directory.name }}
         </span>
         <button class="directory__expand">
-            раскрыть
+            <img src="@/assets/icons/closed.svg"/>
         </button>
-        <button v-if="isRename" @click="rename">Применить</button>
-        <button v-else @click="isRename = true" class="directory__rename">переименовать</button>
-        <button @click="deleteHandler">Удалить</button>
-        <button @click="addNewFile">Создать файл</button>
-        <button @click="addNewFolder">Создать папку</button>
+        <button v-if="isRename" @click="rename"><img src="@/assets/icons/apply.svg"/></button>
+        <button v-else @click="isRename = true" class="directory__rename"><img src="@/assets/icons/edit.svg"/></button>
+        <button @click=" deleteFileById(props.directory.id)"><img src="@/assets/icons/delete.svg"/></button>
+        <button @click=" addNewFile(props.directory.id)"><img src="@/assets/icons/addFile.svg"/></button>
+        <button @click="addNewFolder(props.directory.id)"><img src="@/assets/icons/addFolder.svg"/></button> 
+        
 
-        <SubDirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
+        <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
         <FileElement v-for="file in files" :file="file" :key="file.id" />
 
     </div>
 </template>
 <script setup lang="ts">
 import FileElement from './FileElement.vue';
-import SubDirElement from './SubDirElement.vue';
 import { Item } from '@/types/Item';
 import { computed, defineProps, ref } from 'vue';
 import { useTreeStore } from '@/stores/FileTree';
 const store = useTreeStore();
-const { getTreeElementById, setNewNameById, deleteFileById } = store
+const { getTreeElementById, setNewNameById, deleteFileById,addNewFile,addNewFolder } = store
 const props = defineProps(['directory'])
 const isRename = ref(false)
 const newName = ref(`${props.directory.name}`)
@@ -46,15 +46,11 @@ const rename = function () {
     setNewNameById(props.directory.id, newName.value)
     isRename.value = false
 }
-const deleteHandler = function () {
-    deleteFileById(props.directory.id)
-}
-const addNewFile = function () {
 
-}
-const addNewFolder = function () {
 
-}
+// const addNewFolder = function () {
+
+// }
 
 </script>
 <style>
