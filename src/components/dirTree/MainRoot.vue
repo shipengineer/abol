@@ -1,40 +1,36 @@
 <template>
     <div class="mainRoot">
 
-        <DirElement v-for="dir in dirs" :mTree="dir" :id="dir.id" :key="dir.id" />
+        <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
         <FileElement v-for="file in files" :file="file" :key="file.id" />
     </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { useTreeStore } from '@/stores/FileTree'
 import DirElement from './DirElement.vue';
-import FileElement from './FileElement.vue';
 import { Item } from '@/types/Item';
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import FileElement from './FileElement.vue';
+const store = useTreeStore()
+const { tree } = storeToRefs(store)
 
-export default {
-    components: {
-        DirElement,
-        FileElement
-    },
+const dirs = computed(() => {
+    const result: Array<Item> = []
+    tree.value.forEach(value => {
+        if (value.type === 'dir' && value.parent == 'root') { result.push(value) }
+    })
+    return result
+})
+const files = computed(() => {
+    const result: Array<Item> = []
+    tree.value.forEach(value => {
+        if (value.type === 'file' && value.parent == 'root') { result.push(value) }
+    })
+    return result
+})
 
-    data() {
-        return {
-            tree: useTreeStore(),
 
-        }
-    },
-    computed: {
-        childrens() {
-            return this.tree.tree.consist
-        },
-        dirs(): Array<Item> {
-            return this.childrens?.filter((elem: { type: string; }) => elem.type === 'dir')
-        },
-        files(): Array<Item> {
-            return this.childrens?.filter((elem: { type: string; }) => elem.type === 'file')
-        }
-    }
-}
 
 
 </script>

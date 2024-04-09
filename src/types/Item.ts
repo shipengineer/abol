@@ -1,6 +1,7 @@
 export type Item = {
-        id: string;
-        type: 'root' | 'dir' | 'file';
-        name: string;
-        consist: Array<Item>;
-      };
+  id: string;
+  type: string;
+  name: string;
+  children: Array<string>;
+  parent: string
+} 
