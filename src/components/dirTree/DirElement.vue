@@ -9,23 +9,23 @@
             {{ directory.name }}
         </span>
         <button v-if="isRename" @click="renameHandler">
-            <img src="@/assets/icons/apply.svg"/>
+            <img src="@/assets/icons/apply.svg"/><div class="tooltip">Применить</div>
         </button>
         <button v-else @click="isRename = true" class="directory__rename">
-            <img src="@/assets/icons/edit.svg"/>
+            <img src="@/assets/icons/edit.svg"/><div class="tooltip">Переименовать</div>
         </button>
         
         <div class="buttons" :class="{expand:isExpand}">
 
             <button @click=" addNewFile(props.directory.id)" class="add-file-button">
-                <img src="@/assets/icons/addFile.svg"/>
+                <img src="@/assets/icons/addFile.svg"/><div class="tooltip">Добавить файл</div>
             </button>
             <button @click="addNewFolder(props.directory.id)" class="add-folder-button">
-                <img src="@/assets/icons/addFolder.svg"/>
+                <img src="@/assets/icons/addFolder.svg"/><div class="tooltip">Добавить папку</div>
             </button> 
         </div>
         <button @click="deleteFileById(props.directory.id)" class="delete-button">
-            <img src="@/assets/icons/delete.svg"/>
+            <img src="@/assets/icons/delete.svg"/><div class="tooltip">Удалить</div>
         </button>
 
         </div>
@@ -92,8 +92,30 @@ const renameHandler = function () {
         height: 30px;
     }
     button{
+        position: relative;
+        &:hover{
+            cursor: pointer;
+            .tooltip{
+                display: block;
+                opacity: 0.7;
+                transition: 500ms
+            }
+        }
         background-color: transparent;
         border: none;
+        .tooltip{
+            
+            background-color: wheat;
+            padding: 5px;
+            position: absolute;
+            width: fit-content;
+            left: 100%;
+            bottom: 100%;
+            z-index: 2;
+            display: none;
+            opacity: 0;
+                transition: 500ms
+        }
     }
     .comand-line{
     display: flex;
