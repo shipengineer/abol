@@ -1,14 +1,18 @@
 <template>
     <div class="directory">
-
-
-        <span class="directory__name">
+        <input v-if="isRename" type="text" v-model="newName" />
+        <span v-else class="directory__name">
             {{ directory.name }}
         </span>
         <button class="directory__expand">
             раскрыть
         </button>
-        <button @click="rename" class="directory__rename">переименовать</button>
+        <button v-if="isRename" @click="rename">Применить</button>
+        <button v-else @click="isRename = true" class="directory__rename">переименовать</button>
+        <button @click="deleteHandler">Удалить</button>
+        <button @click="addNewFile">Создать файл</button>
+        <button @click="addNewFolder">Создать папку</button>
+
         <SubDirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
         <FileElement v-for="file in files" :file="file" :key="file.id" />
 
@@ -18,11 +22,13 @@
 import FileElement from './FileElement.vue';
 import SubDirElement from './SubDirElement.vue';
 import { Item } from '@/types/Item';
-import { computed, defineProps } from 'vue';
+import { computed, defineProps, ref } from 'vue';
 import { useTreeStore } from '@/stores/FileTree';
 const store = useTreeStore();
-const { getTreeElementById } = store
+const { getTreeElementById, setNewNameById, deleteFileById } = store
 const props = defineProps(['directory'])
+const isRename = ref(false)
+const newName = ref(`${props.directory.name}`)
 const getedFiles = computed(() => {
     const result: Array<Item> = []
     if (props.directory) {
@@ -37,7 +43,17 @@ const files = computed(() => {
     return getedFiles.value.filter(elem => elem.type === 'file')
 })
 const rename = function () {
-    console.log(1);
+    setNewNameById(props.directory.id, newName.value)
+    isRename.value = false
+}
+const deleteHandler = function () {
+    deleteFileById(props.directory.id)
+}
+const addNewFile = function () {
+
+}
+const addNewFolder = function () {
+
 }
 
 </script>

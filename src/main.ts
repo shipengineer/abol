@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, devtools } from 'vue';
 import App from './App.vue';
 
 import { createPinia } from 'pinia';

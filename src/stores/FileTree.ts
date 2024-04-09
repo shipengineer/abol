@@ -31,6 +31,10 @@ export const useTreeStore = defineStore('tree', () => {
 
     return tree.value.get(ID)!
   }
+  function setNewNameById(ID: string, newName: string) {
+    const mute: Item = tree.value.get(ID)!
+    tree.value.set(ID, { ...mute, name: newName })
+  }
   function setNewValuesByID(ID: string, payload: Item) {
     tree.value.set(ID, payload)
   }
@@ -39,5 +43,5 @@ export const useTreeStore = defineStore('tree', () => {
   }
 
 
-  return { tree, getTreeElementById };
+  return { tree, getTreeElementById, setNewNameById, deleteFileById };
 });
