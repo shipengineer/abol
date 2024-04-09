@@ -1,22 +1,40 @@
 <template>
     <div class="directory">
-        <input v-if="isRename" type="text" v-model="newName" />
+        <div class="comand-line">
+        <button class="directory__expand"  @click="isExpand = !isExpand">
+            <img src="@/assets/icons/closed.svg" class="expand-button" :class="{rotated:isExpand}"/>
+        </button>
+        <input v-if="isRename" type="text" v-model="newName" class="inputName" />
         <span v-else class="directory__name">
             {{ directory.name }}
         </span>
-        <button class="directory__expand">
-            <img src="@/assets/icons/closed.svg"/>
+        <button v-if="isRename" @click="renameHandler">
+            <img src="@/assets/icons/apply.svg"/>
         </button>
-        <button v-if="isRename" @click="rename"><img src="@/assets/icons/apply.svg"/></button>
-        <button v-else @click="isRename = true" class="directory__rename"><img src="@/assets/icons/edit.svg"/></button>
-        <button @click=" deleteFileById(props.directory.id)"><img src="@/assets/icons/delete.svg"/></button>
-        <button @click=" addNewFile(props.directory.id)"><img src="@/assets/icons/addFile.svg"/></button>
-        <button @click="addNewFolder(props.directory.id)"><img src="@/assets/icons/addFolder.svg"/></button> 
+        <button v-else @click="isRename = true" class="directory__rename">
+            <img src="@/assets/icons/edit.svg"/>
+        </button>
         
+        <div class="buttons" :class="{expand:isExpand}">
 
-        <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
-        <FileElement v-for="file in files" :file="file" :key="file.id" />
+            <button @click=" addNewFile(props.directory.id)" class="add-file-button">
+                <img src="@/assets/icons/addFile.svg"/>
+            </button>
+            <button @click="addNewFolder(props.directory.id)" class="add-folder-button">
+                <img src="@/assets/icons/addFolder.svg"/>
+            </button> 
+        </div>
+        <button @click="deleteFileById(props.directory.id)" class="delete-button">
+            <img src="@/assets/icons/delete.svg"/>
+        </button>
 
+        </div>
+        <div class="wraper" :class="{expand:isExpand}">
+
+            <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
+            <FileElement v-for="file in files" :file="file" :key="file.id" />
+        </div>
+            
     </div>
 </template>
 <script setup lang="ts">
@@ -27,6 +45,7 @@ import { useTreeStore } from '@/stores/FileTree';
 const store = useTreeStore();
 const { getTreeElementById, setNewNameById, deleteFileById,addNewFile,addNewFolder } = store
 const props = defineProps(['directory'])
+const isExpand = ref(false)
 const isRename = ref(false)
 const newName = ref(`${props.directory.name}`)
 const getedFiles = computed(() => {
@@ -42,20 +61,63 @@ const dirs = computed(() => {
 const files = computed(() => {
     return getedFiles.value.filter(elem => elem.type === 'file')
 })
-const rename = function () {
+const renameHandler = function () {
     setNewNameById(props.directory.id, newName.value)
     isRename.value = false
 }
 
-
-// const addNewFolder = function () {
-
-// }
-
 </script>
-<style>
-.directory {
-    position: relative;
-    left: 20px;
+<style lang="scss" scoped>
+.expand-button{
+    transform: rotate(0deg);
+    transition: 300ms;
+}
+.rotated{
+    transform: rotate(90deg);
+    transition:300ms;
+}
+.wraper{
+    .expand{
+      display: none;
+      }
+        position: relative;
+        width: 100%;
+        border-left: 2px solid rgba(255, 0, 0, 0.3);
+    }
+
+.directory, .file{
+    
+    img{
+        width: 30px;
+        height: 30px;
+    }
+    button{
+        background-color: transparent;
+        border: none;
+    }
+    .comand-line{
+    display: flex;
+    flex-direction: row;
+    
+    width: 100%;
+}
+    font-size: 24px;
+    
+    display: flex;
+    flex-direction: row;
+    row-gap: 5px;
+    width: 350px;
+    flex-wrap: wrap;
+    padding-left: 10px;
+    
+    .inputName{
+        max-width: 100px;
+        border: 2px solid black;
+    }
+    &__name{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 </style>

@@ -2,8 +2,15 @@
     <div class="mainRoot">
         <button @click=" addNewFile('root')"><img src="@/assets/icons/addFile.svg"/></button>
         <button @click="addNewFolder('root')"><img src="@/assets/icons/addFolder.svg"/></button> 
-        <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
-        <FileElement v-for="file in files" :file="file" :key="file.id" />
+        
+<div class="wraper">
+
+    <DirElement v-for="dir in dirs" :directory="dir" :key="dir.id" />
+    <FileElement v-for="file in files" :file="file" :key="file.id" />
+</div>
+    
+
+      
     </div>
 </template>
 <script setup lang="ts">
@@ -31,14 +38,20 @@ const files = computed(() => {
     return result
 })
 
-
-
-
 </script>
-<style lang="scss">
+<style lang="scss" >
+
 .mainRoot {
-    position: absolute;
-    top: 30%;
-    left: 30%;
+    
+   
+    padding: 10px;
+    border-radius: 20px;
+    
+    
+    button{
+        background-color: transparent;
+        border: none;
+    }
+  
 }
 </style>
