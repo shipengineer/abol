@@ -1,11 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-type Item = {
-  id: string;
-  type: 'root' | 'dir' | 'file';
-  name: string;
-  consist: Array<Item>;
-};
+import { Item } from '@/types/Item';
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref({
     id: 'tree',
@@ -39,10 +34,10 @@ export const useTreeStore = defineStore('tree', () => {
           {
             id: 'dir-2-1',
             type: 'dir',
-            name: 'File 2-1',
+            name: 'Dir 2-1',
             consist: [''],
           },
-          { id: 'file-2-2', type: 'file', name: 'File 2-2', consist: [''] },
+          { id: 'file-2-1-1', type: 'file', name: 'File 2-1-1', consist: [''] },
         ],
       },
       { id: 'file-2', type: 'file', name: 'File 2', consist: [''] },
@@ -53,5 +48,6 @@ export const useTreeStore = defineStore('tree', () => {
       tree.value = payload;
     }
   }
+  
   return { tree, setTree };
 });

@@ -1,13 +1,22 @@
 <template>
-    <div class="file">
-        <span class="file__name">
-          {{props.file.name}}
-        </span>
+  <div class="file">
+    <span class="file__name">
+      {{ file?.name }}
+    </span>
 
-    </div>
+  </div>
 </template>
-<script setup lang="ts">
-const props = defineProps<{
-  file:object
-}>()
+<script lang="ts">
+export default {
+  name: "FileElement",
+  props: {
+    file: Object
+  }
+}
 </script>
+<style>
+.file {
+  position: relative;
+  left: 20px;
+}
+</style>
