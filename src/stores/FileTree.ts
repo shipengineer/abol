@@ -97,6 +97,7 @@ export const useTreeStore = defineStore('tree', () => {
 
   function deleteFileById(ID: string) {
     const element = getTreeElementById(ID);
+    element.children.forEach(child => deleteFileById(child))
     const parent = getTreeElementById(element.parent);
     parent.children = parent.children.filter((child) => child !== ID);
     tree.value.delete(ID);
